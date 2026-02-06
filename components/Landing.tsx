@@ -186,6 +186,12 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               borderRadius: "10px",
               border: `1px solid ${palette.border}`,
               position: "relative",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+
               overflow: "hidden",
             }}
           >
@@ -196,14 +202,11 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                 left: 0,
                 right: 0,
                 height: "1px",
+
                 background: `linear-gradient(90deg, transparent, ${palette.accent}, transparent)`,
               }}
             />
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
+            <div style={{}}>
               <div
                 style={{
                   fontSize: "14px",
