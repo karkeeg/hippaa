@@ -17,6 +17,8 @@ function PageContent() {
     if (currentUser) {
       setIsLoggedIn(true);
       setShowLanding(false); // Skip landing if already logged in
+    } else {
+      setIsLoggedIn(false);
     }
     setIsHydrated(true);
   }, [currentUser]);
@@ -27,26 +29,17 @@ function PageContent() {
   }
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: "1400px" }}>
-        {showLanding ? (
-          <Landing onEnter={() => setShowLanding(false)} />
-        ) : isLoggedIn ? (
-          <MainApp />
-        ) : (
-          <Login
-            onLoginSuccess={() => setIsLoggedIn(true)}
-            onBack={() => setShowLanding(true)}
-          />
-        )}
-      </div>
+    <div style={{ width: "100%", height: "100vh" }}>
+      {showLanding ? (
+        <Landing onEnter={() => setShowLanding(false)} />
+      ) : isLoggedIn ? (
+        <MainApp />
+      ) : (
+        <Login
+          onLoginSuccess={() => setIsLoggedIn(true)}
+          onBack={() => setShowLanding(true)}
+        />
+      )}
     </div>
   );
 }

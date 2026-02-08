@@ -8,6 +8,7 @@ interface Therapist {
   name: string;
   active: boolean;
   assigned_clients?: string[];
+  role?: string;
 }
 
 interface Client {
@@ -41,6 +42,7 @@ export default function AdminPanel() {
   const [uploadSuccess, setUploadSuccess] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeSubTab, setActiveSubTab] = useState("knowledge"); // knowledge, users, assignments
 
   useEffect(() => {
     loadAdminData();
@@ -236,219 +238,273 @@ export default function AdminPanel() {
   return (
     <div className="tab-content active">
       <div className="admin-panel">
-        {/* Upload Knowledge Base */}
-        <div className="admin-section">
-          <h2>📚 Upload Knowledge Base Document</h2>
-          {uploadSuccess && (
-            <div className="success-message">{uploadSuccess}</div>
-          )}
-          {uploadError && <div className="error-message">{uploadError}</div>}
-
-          <div className="form-group">
-            <label>Document File (PDF, DOCX, TXT)</label>
-            <div className="file-input-wrapper">
-              <input
-                type="file"
-                className="file-input"
-                accept=".pdf,.docx,.doc,.txt"
-                onChange={handleFileSelect}
-              />
-              <label className="file-label">
-                {file
-                  ? `Selected: ${file.name}`
-                  : "Click to select file or drag here"}
-              </label>
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Document Title</label>
-              <input
-                type="text"
-                placeholder="e.g., CBT Techniques Guide"
-                value={docTitle}
-                onChange={(e) => setDocTitle(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Category</label>
-              <select
-                className="select-input"
-                value={docCategory}
-                onChange={(e) => setDocCategory(e.target.value)}
-              >
-                <option value="therapy_techniques">Therapy Techniques</option>
-                <option value="evidence_based">Evidence-Based Practices</option>
-                <option value="regulations">Regulations & Compliance</option>
-                <option value="training">Training Materials</option>
-                <option value="general">General</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label>Description (Optional)</label>
-            <textarea
-              placeholder="Brief description of the document..."
-              value={docDescription}
-              onChange={(e) => setDocDescription(e.target.value)}
-              rows={3}
-            />
-          </div>
-
-          <button
-            className="btn"
-            onClick={handleUploadKnowledge}
-            disabled={loading}
+        <div className="admin-sub-tabs">
+          <button 
+            className={`sub-tab ${activeSubTab === "knowledge" ? "active" : ""}`}
+            onClick={() => setActiveSubTab("knowledge")}
           >
-            {loading ? "Uploading..." : "Upload Knowledge Document"}
+            📚 Knowledge Base
+          </button>
+          <button 
+            className={`sub-tab ${activeSubTab === "users" ? "active" : ""}`}
+            onClick={() => setActiveSubTab("users")}
+          >
+            👥 User Management
+          </button>
+          <button 
+            className={`sub-tab ${activeSubTab === "assignments" ? "active" : ""}`}
+            onClick={() => setActiveSubTab("assignments")}
+          >
+            🔗 Client Assignments
           </button>
         </div>
 
-        {/* Knowledge Base Documents List */}
-        <div className="admin-section">
-          <h2>📚 Knowledge Base Documents</h2>
-          {knowledgeDocs.length === 0 ? (
-            <p
-              style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
-            >
-              No knowledge documents uploaded yet
-            </p>
-          ) : (
-            knowledgeDocs.map((doc) => (
-              <div key={doc.doc_id} className="knowledge-doc-card">
-                <div>
-                  <h3>{doc.title}</h3>
-                  <p>Category: {doc.category}</p>
-                  <p>
-                    Chunks: {doc.chunk_count} | Uploaded by: {doc.uploaded_by}
-                  </p>
-                  {doc.description && (
-                    <p style={{ fontStyle: "italic" }}>{doc.description}</p>
-                  )}
+        <div className="admin-content-inner">
+          {activeSubTab === "knowledge" && (
+            <>
+              {/* Upload Knowledge Base */}
+              <div className="admin-section">
+                <h2>📚 Upload Knowledge Base Document</h2>
+                {uploadSuccess && (
+                  <div className="success-message">{uploadSuccess}</div>
+                )}
+                {uploadError && <div className="error-message">{uploadError}</div>}
+
+                <div className="form-group">
+                  <label>Document File (PDF, DOCX, TXT)</label>
+                  <div className="file-input-wrapper">
+                    <input
+                      type="file"
+                      className="file-input"
+                      accept=".pdf,.docx,.doc,.txt"
+                      onChange={handleFileSelect}
+                    />
+                    <label className="file-label">
+                      {file
+                        ? `Selected: ${file.name}`
+                        : "Click to select file or drag here"}
+                    </label>
+                  </div>
                 </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Document Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., CBT Techniques Guide"
+                      value={docTitle}
+                      onChange={(e) => setDocTitle(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select
+                      className="select-input"
+                      value={docCategory}
+                      onChange={(e) => setDocCategory(e.target.value)}
+                    >
+                      <option value="therapy_techniques">Therapy Techniques</option>
+                      <option value="evidence_based">Evidence-Based Practices</option>
+                      <option value="regulations">Regulations & Compliance</option>
+                      <option value="training">Training Materials</option>
+                      <option value="general">General</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Description (Optional)</label>
+                  <textarea
+                    placeholder="Brief description of the document..."
+                    value={docDescription}
+                    onChange={(e) => setDocDescription(e.target.value)}
+                    rows={3}
+                  />
+                </div>
+
                 <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteKnowledge(doc.doc_id)}
+                  className="btn"
+                  onClick={handleUploadKnowledge}
+                  disabled={loading}
                 >
-                  Delete
+                  {loading ? "Uploading..." : "Upload Knowledge Document"}
                 </button>
               </div>
-            ))
+
+              {/* Knowledge Base Documents List */}
+              <div className="admin-section">
+                <h2>📚 Knowledge Base Documents</h2>
+                {knowledgeDocs.length === 0 ? (
+                  <p
+                    style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
+                  >
+                    No knowledge documents uploaded yet
+                  </p>
+                ) : (
+                  knowledgeDocs.map((doc) => (
+                    <div key={doc.doc_id} className="knowledge-doc-card">
+                      <div>
+                        <h3>{doc.title}</h3>
+                        <p>Category: {doc.category}</p>
+                        <p>
+                          Chunks: {doc.chunk_count} | Uploaded by: {doc.uploaded_by}
+                        </p>
+                        {doc.description && (
+                          <p style={{ fontStyle: "italic" }}>{doc.description}</p>
+                        )}
+                      </div>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteKnowledge(doc.doc_id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
           )}
-        </div>
 
-        {/* Assign Clients */}
-        <div className="admin-section">
-          <h2>Assign Clients to Therapists</h2>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Select Therapist</label>
-              <select
-                className="select-input"
-                value={selectedTherapist}
-                onChange={(e) => setSelectedTherapist(e.target.value)}
-              >
+          {activeSubTab === "users" && (
+            <>
+              {/* Create User */}
+              <div className="admin-section">
+                <h2>Create New User</h2>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      placeholder="user@example.com"
+                      value={newUserEmail}
+                      onChange={(e) => setNewUserEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      placeholder="John Doe"
+                      value={newUserName}
+                      onChange={(e) => setNewUserName(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      placeholder="Enter password"
+                      value={newUserPassword}
+                      onChange={(e) => setNewUserPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Role</label>
+                    <select
+                      className="select-input"
+                      value={newUserRole}
+                      onChange={(e) => setNewUserRole(e.target.value)}
+                    >
+                      <option value="therapist">Therapist</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+                </div>
+                <button className="btn" onClick={handleCreateUser}>
+                  Create User
+                </button>
+              </div>
+
+              {/* Therapists List */}
+              <div className="admin-section">
+                <h2>All Users / Therapists</h2>
                 {therapists.map((t) => (
-                  <option key={t.email} value={t.email}>
-                    {t.name} ({t.email})
-                  </option>
+                  <div key={t.email} className="therapist-card">
+                    <h3>{t.name}</h3>
+                    <p>Email: {t.email}</p>
+                    <p>Status: {t.active ? "✅ Active" : "❌ Inactive"}</p>
+                    <p>Role: {t.role || (t.email.includes("admin") ? "admin" : "therapist")}</p>
+                    <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
+                  </div>
                 ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Select Client</label>
-              <select
-                className="select-input"
-                value={selectedClient}
-                onChange={(e) => setSelectedClient(e.target.value)}
-              >
-                {clients.map((c) => (
-                  <option key={c.client_id} value={c.client_id}>
-                    {c.display_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="btn-group">
-            <button className="btn" onClick={handleAssignClient}>
-              ✅ Assign Client
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={handleUnassignClient}
-            >
-              ❌ Unassign Client
-            </button>
-          </div>
-        </div>
+              </div>
+            </>
+          )}
 
-        {/* Create User */}
-        <div className="admin-section">
-          <h2>Create New User</h2>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="user@example.com"
-                value={newUserEmail}
-                onChange={(e) => setNewUserEmail(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Full Name</label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder="Enter password"
-                value={newUserPassword}
-                onChange={(e) => setNewUserPassword(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Role</label>
-              <select
-                className="select-input"
-                value={newUserRole}
-                onChange={(e) => setNewUserRole(e.target.value)}
-              >
-                <option value="therapist">Therapist</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-          </div>
-          <button className="btn" onClick={handleCreateUser}>
-            Create User
-          </button>
-        </div>
+          {activeSubTab === "assignments" && (
+            <>
+              {/* Assign Clients */}
+              <div className="admin-section">
+                <h2>Assign Clients to Therapists</h2>
+                <p style={{ marginBottom: "20px", color: "#6b7280", fontSize: "14px" }}>
+                  Link clients to their respective therapists to enable personalized smart chat assistance.
+                </p>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Select Therapist</label>
+                    <select
+                      className="select-input"
+                      value={selectedTherapist}
+                      onChange={(e) => setSelectedTherapist(e.target.value)}
+                    >
+                      {therapists.map((t) => (
+                        <option key={t.email} value={t.email}>
+                          {t.name} ({t.email})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Select Client</label>
+                    <select
+                      className="select-input"
+                      value={selectedClient}
+                      onChange={(e) => setSelectedClient(e.target.value)}
+                    >
+                      {clients.map((c) => (
+                        <option key={c.client_id} value={c.client_id}>
+                          {c.display_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="btn-group">
+                  <button className="btn" onClick={handleAssignClient}>
+                    ✅ Assign Client
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleUnassignClient}
+                  >
+                    ❌ Unassign Client
+                  </button>
+                </div>
+              </div>
 
-        {/* Therapists List */}
-        <div className="admin-section">
-          <h2>All Therapists</h2>
-          {therapists.map((t) => (
-            <div key={t.email} className="therapist-card">
-              <h3>{t.name}</h3>
-              <p>Email: {t.email}</p>
-              <p>Status: {t.active ? "✅ Active" : "❌ Inactive"}</p>
-              <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
-              {t.assigned_clients && t.assigned_clients.length > 0 && (
-                <p>Client IDs: {t.assigned_clients.join(", ")}</p>
-              )}
-            </div>
-          ))}
+              {/* Currently Assigned List View */}
+              <div className="admin-section">
+                 <h2>Active Client Links</h2>
+                 <div className="therapist-list">
+                   {therapists.filter(t => t.assigned_clients && t.assigned_clients.length > 0).map(t => (
+                     <div key={t.email} className="therapist-card">
+                       <h3>{t.name}</h3>
+                       <p>👤 {t.assigned_clients?.length} Assigned Clients</p>
+                       <div style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                         {t.assigned_clients?.map(cid => (
+                           <span key={cid} className="status-indicator info">{cid}</span>
+                         ))}
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

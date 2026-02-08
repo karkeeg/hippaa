@@ -8,6 +8,11 @@ export const setSessionToken = (token: string) => {
 
 export const getSessionToken = () => sessionToken;
 
+let unauthenticatedHandler: (() => void) | null = null;
+export const setUnauthenticatedHandler = (handler: () => void) => {
+  unauthenticatedHandler = handler;
+};
+
 export const getAuthHeaders = (): Record<string, string> => {
   return sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {};
 };
@@ -28,8 +33,8 @@ export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
 
   if (response.status === 401) {
     sessionToken = null;
-    if (typeof window !== "undefined") {
-      window.location.href = "/";
+    if (unauthenticatedHandler) {
+      unauthenticatedHandler();
     }
     throw new Error("Session expired");
   }

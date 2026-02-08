@@ -7,7 +7,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { setSessionToken } from "./api";
+import { setSessionToken, setUnauthenticatedHandler } from "./api";
 
 export interface User {
   email: string;
@@ -31,6 +31,8 @@ interface AppContextType {
   setChatHistory: (history: ChatMessage[]) => void;
   addMessage: (message: ChatMessage) => void;
   clearChat: () => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -39,10 +41,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [activeTab, setActiveTab] = useState("chat");
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Load user from localStorage on mount
+  // Load user and state from localStorage on mount
   useEffect(() => {
+    setUnauthenticatedHandler(() => {
+      setCurrentUser(null);
+    });
+
     try {
       const savedUser = localStorage.getItem("hipaa_user");
       if (savedUser) {
@@ -52,11 +59,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
           setSessionToken(user.session_token);
         }
       }
+
+      const savedTab = localStorage.getItem("hipaa_active_tab");
+      if (savedTab) {
+        setActiveTab(savedTab);
+      }
+
+      const savedClientId = localStorage.getItem("hipaa_selected_client");
+      if (savedClientId) {
+        setSelectedClientId(savedClientId);
+      }
     } catch (error) {
-      console.error("Failed to load user from localStorage:", error);
+      console.error("Failed to load state from localStorage:", error);
     }
     setIsHydrated(true);
   }, []);
+
+  // Save state to localStorage
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem("hipaa_active_tab", activeTab);
+    }
+  }, [activeTab, isHydrated]);
+
+  useEffect(() => {
+    if (isHydrated && selectedClientId) {
+      localStorage.setItem("hipaa_selected_client", selectedClientId);
+    }
+  }, [selectedClientId, isHydrated]);
 
   // Save user to localStorage whenever it changes
   useEffect(() => {
@@ -88,6 +118,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setChatHistory,
         addMessage,
         clearChat,
+        activeTab,
+        setActiveTab,
       }}
     >
       {children}
