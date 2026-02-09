@@ -2,6 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { apiCall } from "@/lib/api";
+import { 
+  FileText, 
+  Loader2, 
+  Inbox, 
+  Calendar, 
+  Search, 
+  Folder,
+  Eye
+} from "lucide-react";
 
 interface Client {
   client_id: string;
@@ -163,7 +172,9 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
     <div className="tab-content active">
       <div className="admin-panel">
         <div className="admin-section">
-          <h2>📄 Client Document Management</h2>
+          <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <FileText size={20} /> Client Document Management
+          </h2>
 
           <div className="form-group">
             <label>Select Client</label>
@@ -203,12 +214,16 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
               )}
 
               {loading && (
-                <div className="loading-spinner">⏳ Loading documents...</div>
+                <div className="loading-spinner" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center", padding: "20px" }}>
+                  <Loader2 size={24} className="animate-spin" /> Loading documents...
+                </div>
               )}
 
               {!loading && documents.length === 0 && (
                 <div className="no-documents">
-                  <div className="no-documents-icon">📭</div>
+                  <div className="no-documents-icon">
+                    <Inbox size={48} color="#cbd5e0" />
+                  </div>
                   <p>No documents found for this client</p>
                 </div>
               )}
@@ -224,8 +239,8 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
                               doc.source_uri ||
                               "Unknown Document"}
                           </div>
-                          <div className="document-date">
-                            📅 {formatDate(doc.date || doc.date_iso)}
+                          <div className="document-date" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                            <Calendar size={14} /> {formatDate(doc.date || doc.date_iso)}
                           </div>
                         </div>
                         <div className="document-type-badge">
@@ -268,14 +283,15 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
                               window.open(doc.drive_link, "_blank")
                             }
                           >
-                            📄 View in Drive
+                            <FileText size={16} /> View in Drive
                           </button>
                         )}
                         <button
                           className="doc-btn"
                           onClick={() => viewDocumentDetails(doc)}
+                          style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
-                          🔍 View Full SOAP Note
+                          <Search size={16} /> View Full SOAP Note
                         </button>
                       </div>
                     </div>
@@ -287,7 +303,9 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
 
           {!selectedClient && (
             <div className="no-documents">
-              <div className="no-documents-icon">📁</div>
+              <div className="no-documents-icon">
+                <Folder size={48} color="#cbd5e0" />
+              </div>
               <p>Select a client to view their documents</p>
             </div>
           )}

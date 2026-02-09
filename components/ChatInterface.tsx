@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { apiCall } from "@/lib/api";
 import { useApp } from "@/lib/context";
+import { User, MessageSquare, Send, Loader2, Trash2 } from "lucide-react";
 
 export default function ChatInterface() {
   const { selectedClientId, chatHistory, addMessage, clearChat } = useApp();
@@ -123,29 +124,29 @@ export default function ChatInterface() {
           ) : (
             chatHistory.map((msg: any, idx: number) => (
               <div key={idx} className={`message ${msg.role}`}>
-                <div className="message-avatar">
-                  {msg.role === "user" ? "U" : "A"}
-                </div>
+                <div className="message-avatar" style={{ width: "40px", height: "40px" }}>
+                  {msg.role === "user" ? <User size={24} /> : <MessageSquare size={24} />}
+                  </div>
                 <div className="message-content">
-                  {msg.role === "assistant" ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatMessageContent(msg.content),
-                      }}
-                    />
-                  ) : (
-                    msg.content
-                  )}
-                  {msg.role === "assistant" && msg.metadata && (
+                    {msg.role === "assistant" ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessageContent(msg.content),
+                        }}
+                      />
+                    ) : (
+                      msg.content
+                    )}
+                    {msg.role === "assistant" && msg.metadata && (
                     <div className="message-meta">
-                      {msg.metadata.query_type && (
+                        {msg.metadata.query_type && (
                         <div>Query Type: {msg.metadata.query_type}</div>
-                      )}
-                      {msg.metadata.num_matches && (
+                        )}
+                        {msg.metadata.num_matches && (
                         <div>Matches found: {msg.metadata.num_matches}</div>
-                      )}
-                    </div>
-                  )}
+                        )}
+                      </div>
+                    )}
                 </div>
               </div>
             ))
@@ -154,27 +155,38 @@ export default function ChatInterface() {
         </div>
 
         <div className="chat-input-container">
-          <div className="chat-input-wrapper">
-            <textarea
-              className="chat-input"
-              placeholder="Ask about the selected client or general questions..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
-              rows={1}
-            />
-            <button
-              className="send-btn"
-              onClick={sendMessage}
-              disabled={loading}
-            >
-              {loading ? "Thinking..." : "Send"}
-            </button>
+          <div className="flex items-center gap-3 w-full">
+            <div className="chat-input-wrapper flex-1">
+              <textarea
+                className="chat-input"
+                placeholder="Ask about the selected client or general questions..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+                rows={1}
+              />
+              <button
+                className="send-btn"
+                onClick={sendMessage}
+                disabled={loading}
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Thinking...
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} /> Send
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

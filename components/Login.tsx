@@ -4,6 +4,7 @@ import { useState } from "react";
 import { login } from "@/lib/api";
 import { useApp } from "@/lib/context";
 import { setSessionToken } from "@/lib/api";
+import { Stethoscope, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 
 interface LoginProps {
   onLoginSuccess: () => void;
@@ -49,14 +50,18 @@ export default function Login({ onLoginSuccess, onBack }: LoginProps) {
               border: "none",
               color: "#666",
               cursor: "pointer",
-              fontSize: 18,
               padding: "4px 8px",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px"
             }}
           >
-            ← Back
+            <ArrowLeft size={18} /> Back
           </button>
         )}
-        <h1>🩺 HIPAA Admin</h1>
+        <h1 style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "center" }}>
+          <Stethoscope size={32} color="#2b6cb0" /> HIPAA Admin
+        </h1>
         <h2>Smart Chat System</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
@@ -82,8 +87,12 @@ export default function Login({ onLoginSuccess, onBack }: LoginProps) {
               required
             />
           </div>
-          <button type="submit" className="btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <button type="submit" className="btn" disabled={loading} style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+            {loading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" /> Logging in...
+              </>
+            ) : "Login"}
           </button>
         </form>
         <p
@@ -91,10 +100,14 @@ export default function Login({ onLoginSuccess, onBack }: LoginProps) {
             textAlign: "center",
             marginTop: "24px",
             color: "#7a82a8",
-            fontSize: "14px",
+            fontSize: "var(--text-sm)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px"
           }}
         >
-          🔒 HIPAA Compliant | All data encrypted
+          <ShieldCheck size={20} /> HIPAA Compliant | All data encrypted
         </p>
       </div>
     </div>

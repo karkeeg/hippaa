@@ -2,6 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { apiCall } from "@/lib/api";
+import { 
+  Library, 
+  Users, 
+  Link as LinkIcon, 
+  CheckCircle, 
+  XCircle, 
+  User, 
+  Upload, 
+  Trash2,
+  FileBox
+} from "lucide-react";
 
 interface Therapist {
   email: string;
@@ -242,20 +253,23 @@ export default function AdminPanel() {
           <button 
             className={`sub-tab ${activeSubTab === "knowledge" ? "active" : ""}`}
             onClick={() => setActiveSubTab("knowledge")}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            📚 Knowledge Base
+            <Library size={16} /> Knowledge Base
           </button>
           <button 
             className={`sub-tab ${activeSubTab === "users" ? "active" : ""}`}
             onClick={() => setActiveSubTab("users")}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            👥 User Management
+            <Users size={16} /> User Management
           </button>
           <button 
             className={`sub-tab ${activeSubTab === "assignments" ? "active" : ""}`}
             onClick={() => setActiveSubTab("assignments")}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            🔗 Client Assignments
+            <LinkIcon size={16} /> Client Assignments
           </button>
         </div>
 
@@ -264,7 +278,9 @@ export default function AdminPanel() {
             <>
               {/* Upload Knowledge Base */}
               <div className="admin-section">
-                <h2>📚 Upload Knowledge Base Document</h2>
+                <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <Library size={20} /> Upload Knowledge Base Document
+                </h2>
                 {uploadSuccess && (
                   <div className="success-message">{uploadSuccess}</div>
                 )}
@@ -334,7 +350,9 @@ export default function AdminPanel() {
 
               {/* Knowledge Base Documents List */}
               <div className="admin-section">
-                <h2>📚 Knowledge Base Documents</h2>
+                <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <Library size={20} /> Knowledge Base Documents
+                </h2>
                 {knowledgeDocs.length === 0 ? (
                   <p
                     style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
@@ -426,7 +444,9 @@ export default function AdminPanel() {
                   <div key={t.email} className="therapist-card">
                     <h3>{t.name}</h3>
                     <p>Email: {t.email}</p>
-                    <p>Status: {t.active ? "✅ Active" : "❌ Inactive"}</p>
+                    <p style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      Status: {t.active ? <><CheckCircle size={14} color="#16a34a" /> Active</> : <><XCircle size={14} color="#dc2626" /> Inactive</>}
+                    </p>
                     <p>Role: {t.role || (t.email.includes("admin") ? "admin" : "therapist")}</p>
                     <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
                   </div>
@@ -440,7 +460,7 @@ export default function AdminPanel() {
               {/* Assign Clients */}
               <div className="admin-section">
                 <h2>Assign Clients to Therapists</h2>
-                <p style={{ marginBottom: "20px", color: "#6b7280", fontSize: "14px" }}>
+                <p style={{ marginBottom: "20px", color: "#6b7280", fontSize: "var(--text-base)" }}>
                   Link clients to their respective therapists to enable personalized smart chat assistance.
                 </p>
                 <div className="form-row">
@@ -474,34 +494,17 @@ export default function AdminPanel() {
                   </div>
                 </div>
                 <div className="btn-group">
-                  <button className="btn" onClick={handleAssignClient}>
-                    ✅ Assign Client
+                  <button className="btn" onClick={handleAssignClient} style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                    <CheckCircle size={18} /> Assign Client
                   </button>
                   <button
                     className="btn btn-secondary"
                     onClick={handleUnassignClient}
+                    style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}
                   >
-                    ❌ Unassign Client
+                    <XCircle size={18} /> Unassign Client
                   </button>
                 </div>
-              </div>
-
-              {/* Currently Assigned List View */}
-              <div className="admin-section">
-                 <h2>Active Client Links</h2>
-                 <div className="therapist-list">
-                   {therapists.filter(t => t.assigned_clients && t.assigned_clients.length > 0).map(t => (
-                     <div key={t.email} className="therapist-card">
-                       <h3>{t.name}</h3>
-                       <p>👤 {t.assigned_clients?.length} Assigned Clients</p>
-                       <div style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                         {t.assigned_clients?.map(cid => (
-                           <span key={cid} className="status-indicator info">{cid}</span>
-                         ))}
-                       </div>
-                     </div>
-                   ))}
-                 </div>
               </div>
             </>
           )}

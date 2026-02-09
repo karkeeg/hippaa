@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useApp } from "@/lib/context";
 import { logout, apiCall } from "@/lib/api";
+import { Trash2, LogOut, Library, User, Menu } from "lucide-react";
 
-export default function Header() {
+export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const {
     currentUser,
     setCurrentUser,
@@ -48,6 +49,9 @@ export default function Header() {
   return (
     <header className="header-new">
       <div className="header-left">
+        <button className="mobile-menu-btn" onClick={onMenuClick}>
+          <Menu size={24} />
+        </button>
         <div className="client-selector-mini">
           <select
             id="clientSelectDropdown"
@@ -56,10 +60,10 @@ export default function Header() {
             onChange={handleClientChange}
           >
             <option value="">-- Select Client or KB --</option>
-            <option value="GENERAL_KNOWLEDGE">📚 General Training</option>
+            <option value="GENERAL_KNOWLEDGE">General Training</option>
             {clients.map((c) => (
               <option key={c.client_id} value={c.client_id}>
-                👤 {c.display_name}
+                {c.display_name}
               </option>
             ))}
           </select>
@@ -67,11 +71,9 @@ export default function Header() {
       </div>
 
       <div className="header-right">
-        <button className="header-btn-new" onClick={clearChat}>
-          🗑️ Clear Chat
-        </button>
-        <button className="header-btn-new logout" onClick={handleLogout}>
-          Logout
+        <button className="header-btn-new logout" onClick={handleLogout} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <LogOut size={16} />
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </div>
     </header>

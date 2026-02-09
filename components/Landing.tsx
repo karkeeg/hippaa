@@ -1,6 +1,13 @@
 "use client";
 
 import React from "react";
+import { 
+  Settings, 
+  ShieldCheck, 
+  MessageSquare, 
+  FileText,
+  ArrowRight 
+} from "lucide-react";
 
 export default function Landing({ onEnter }: { onEnter: () => void }) {
   const palette = {
@@ -42,7 +49,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
             <div>
               <div
                 style={{
-                  fontSize: "16px",
+                  fontSize: "20px",
                   fontWeight: "700",
                   lineHeight: "1.2",
                 }}
@@ -51,12 +58,12 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               </div>
               <div
                 style={{
-                  fontSize: "13px",
+                  fontSize: "14px",
                   color: palette.muted,
                   fontWeight: "500",
                 }}
               >
-                Smart Chat
+                Smart Chat System
               </div>
             </div>
           </div>
@@ -69,10 +76,10 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                 color: palette.light,
                 border: "none",
                 borderRadius: "6px",
-                padding: "10px 24px",
+                padding: "12px 28px",
                 cursor: "pointer",
                 fontWeight: "600",
-                fontSize: "14px",
+                fontSize: "16px",
                 transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
@@ -93,9 +100,9 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               style={{
                 margin: "0 0 12px 0",
                 color: palette.muted,
-                fontWeight: "500",
-                fontSize: "14px",
-                letterSpacing: "0.5px",
+                fontWeight: "600",
+                fontSize: "16px",
+                letterSpacing: "0.8px",
                 textTransform: "uppercase",
               }}
             >
@@ -115,14 +122,14 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               style={{
                 margin: "0 0 32px 0",
                 color: palette.muted,
-                maxWidth: "500px",
+                maxWidth: "600px",
                 lineHeight: "1.6",
                 fontWeight: "400",
-                fontSize: "15px",
+                fontSize: "18px",
               }}
             >
-              A unified admin platform for managing access, documents, and
-              patient communications. Built for healthcare with security at
+              A unified healthcare platform for managing access, documents, and
+              patient communications. Built for modern clinics with security at
               every layer.
             </p>
 
@@ -134,10 +141,10 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                   background: palette.accent,
                   color: palette.light,
                   border: "none",
-                  borderRadius: "6px",
+                  borderRadius: "8px",
                   cursor: "pointer",
                   fontWeight: "600",
-                  fontSize: "15px",
+                  fontSize: "18px",
                   boxShadow: "0 2px 8px rgba(107, 168, 160, 0.15)",
                   transition: "all 0.2s ease",
                 }}
@@ -150,7 +157,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                     "0 2px 8px rgba(107, 168, 160, 0.15)";
                 }}
               >
-                Start Building →
+                Start Building <ArrowRight size={18} style={{ marginLeft: "8px", verticalAlign: "middle" }} />
               </button>
               <button
                 onClick={(e) => e.preventDefault()}
@@ -159,9 +166,9 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                   background: "transparent",
                   border: `1.5px solid ${palette.border}`,
                   color: palette.text,
-                  borderRadius: "6px",
+                  borderRadius: "8px",
                   cursor: "pointer",
-                  fontSize: "15px",
+                  fontSize: "18px",
                   fontWeight: "500",
                   transition: "all 0.2s ease",
                 }}
@@ -224,7 +231,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
                   fontWeight: "700",
                 }}
               >
-                ⚙️
+                <Settings size={40} />
               </div>
             </div>
           </div>
@@ -255,16 +262,16 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
             <div
               className="landing-feature-icon"
               style={{
-                fontSize: "28px",
+                color: palette.accent,
                 marginBottom: "16px",
               }}
             >
-              🔒
+              <ShieldCheck size={32} />
             </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
-                fontSize: "16px",
+                fontSize: "20px",
                 fontWeight: "700",
                 color: palette.text,
               }}
@@ -275,7 +282,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               style={{
                 margin: 0,
                 color: palette.muted,
-                fontSize: "14px",
+                fontSize: "16px",
                 lineHeight: "1.6",
                 fontWeight: "400",
               }}
@@ -309,16 +316,16 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
             <div
               className="landing-feature-icon"
               style={{
-                fontSize: "28px",
+                color: palette.accent,
                 marginBottom: "16px",
               }}
             >
-              💬
+              <MessageSquare size={32} />
             </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
-                fontSize: "16px",
+                fontSize: "20px",
                 fontWeight: "700",
                 color: palette.text,
               }}
@@ -329,7 +336,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               style={{
                 margin: 0,
                 color: palette.muted,
-                fontSize: "14px",
+                fontSize: "16px",
                 lineHeight: "1.6",
                 fontWeight: "400",
               }}
@@ -363,16 +370,16 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
             <div
               className="landing-feature-icon"
               style={{
-                fontSize: "28px",
+                color: palette.accent,
                 marginBottom: "16px",
               }}
             >
-              📄
+              <FileText size={32} />
             </div>
             <h3
               style={{
                 margin: "0 0 8px 0",
-                fontSize: "16px",
+                fontSize: "20px",
                 fontWeight: "700",
                 color: palette.text,
               }}
@@ -383,7 +390,7 @@ export default function Landing({ onEnter }: { onEnter: () => void }) {
               style={{
                 margin: 0,
                 color: palette.muted,
-                fontSize: "14px",
+                fontSize: "16px",
                 lineHeight: "1.6",
                 fontWeight: "400",
               }}

@@ -1,45 +1,72 @@
 "use client";
 
 import { useApp } from "@/lib/context";
+import {
+  MessageSquare,
+  Settings,
+  FileText,
+  Stethoscope,
+  User,
+  X
+} from "lucide-react";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const { activeTab, setActiveTab, currentUser } = useApp();
 
   const navItems = [
-    { id: "chat", label: "💬 Chat", icon: "💬" },
-    { id: "admin", label: "⚙️ Admin Panel", icon: "⚙️", role: "admin" },
-    { id: "documents", label: "📄 Documents", icon: "📄", role: "admin" },
+    { id: "chat", label: "Chat", icon: <MessageSquare size={18} /> },
+    { id: "admin", label: "Admin Panel", icon: <Settings size={18} />, role: "admin" },
+    { id: "documents", label: "Documents", icon: <FileText size={18} />, role: "admin" },
   ];
 
+  const handleNavClick = (tabId: string) => {
+    setActiveTab(tabId);
+    if (window.innerWidth <= 1024) {
+      onClose();
+    }
+  };
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <div className="sidebar-logo">🩺 HIPAA Admin</div>
-      </div>
-      <nav className="sidebar-nav">
-        {navItems.map((item) => {
-          if (item.role && currentUser?.role !== item.role) return null;
-          return (
-            <button
-              key={item.id}
-              className={`nav-item ${activeTab === item.id ? "active" : ""}`}
-              onClick={() => setActiveTab(item.id)}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              <span className="nav-label">{item.label.replace(item.icon, "").trim()}</span>
-            </button>
-          );
-        })}
-      </nav>
-      <div className="sidebar-footer">
-        <div className="user-profile">
-          <div className="user-avatar">👤</div>
-          <div className="user-details">
-            <p className="user-name">{currentUser?.name}</p>
-            <p className="user-role">{currentUser?.role}</p>
+    <>
+      <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-logo" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <Stethoscope size={24} color="#63b3ed" />
+            HIPAA Admin
+          </div>
+          <button className="mobile-close-btn" onClick={onClose}>
+            <X size={24} />
+          </button>
+        </div>
+
+        <nav className="sidebar-nav">
+          {navItems.map((item) => {
+            if (item.role && currentUser?.role !== item.role) return null;
+            return (
+              <button
+                key={item.id}
+                className={`nav-item ${activeTab === item.id ? "active" : ""}`}
+                onClick={() => handleNavClick(item.id)}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="user-profile">
+            <div className="user-avatar">
+              <User size={20} color="#fff" />
+            </div>
+            <div className="user-details">
+              <div className="user-name">{currentUser?.name || "Therapist"}</div>
+              <div className="user-role">{currentUser?.role || "Staff"}</div>
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
