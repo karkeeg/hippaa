@@ -12,6 +12,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     selectedClientId,
     setSelectedClientId,
     clearChat,
+    activeTab,
   } = useApp();
 
   const [clients, setClients] = useState<
@@ -52,22 +53,24 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
         <button className="mobile-menu-btn" onClick={onMenuClick}>
           <Menu size={24} />
         </button>
-        <div className="client-selector-mini">
-          <select
-            id="clientSelectDropdown"
-            className="select-input-sm"
-            value={selectedClientId || ""}
-            onChange={handleClientChange}
-          >
-            <option value="">-- Select Client or KB --</option>
-            <option value="GENERAL_KNOWLEDGE">General Training</option>
-            {clients.map((c) => (
-              <option key={c.client_id} value={c.client_id}>
-                {c.display_name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {activeTab === "chat" && (
+          <div className="client-selector-mini">
+            <select
+              id="clientSelectDropdown"
+              className="select-input-sm"
+              value={selectedClientId || ""}
+              onChange={handleClientChange}
+            >
+              <option value="">-- Select Client or KB --</option>
+              <option value="GENERAL_KNOWLEDGE">General Training</option>
+              {clients.map((c) => (
+                <option key={c.client_id} value={c.client_id}>
+                  {c.display_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="header-right">

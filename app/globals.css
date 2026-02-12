@@ -1,4 +1,7 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
@@ -25,8 +28,8 @@
   --color-warning: #d97706;
   
   --color-bg-main: #f8f9fa;
-  --color-bg-card: #ffffff;
-  --color-bg-sidebar: #1a202c;
+  --color-bg-card: #646363;
+  --color-bg-sidebar: #646363;
   
   --color-text-main: #1f2937;
   --color-text-muted: #64748b;
@@ -399,6 +402,21 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+.header-title-container {
+  display: flex;
+  align-items: center;
+  background: var(--color-primary);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: white;
+}
+
+.header-title-container h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
 @media (min-width: 1025px) {
   .header-new {
     padding: 0 24px;
@@ -583,6 +601,31 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.scrollable-area {
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-right: -8px;
+}
+
+.scrollable-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollable-area::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 10px;
+}
+
+.scrollable-area::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
 
 /* Client Selector */

@@ -5,6 +5,7 @@ import DocumentsPanel from "./DocumentsPanel";
 import Sidebar from "./Layout/Sidebar";
 import Header from "./Layout/Header";
 import ChatInterface from "./ChatInterface";
+import TagsPanel from "./TagsPanel";
 
 export default function MainApp() {
   const {
@@ -33,6 +34,9 @@ export default function MainApp() {
           )}
           {activeTab === "documents" && currentUser?.role === "admin" && (
             <DocumentsPanel />
+          )}
+          {activeTab === "tags" && (
+            <TagsPanel />
           )}
         </main>
       </div>

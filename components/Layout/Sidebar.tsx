@@ -7,7 +7,8 @@ import {
   FileText,
   Stethoscope,
   User,
-  X
+  X,
+  Tag
 } from "lucide-react";
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
@@ -17,6 +18,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean, onClose:
     { id: "chat", label: "Chat", icon: <MessageSquare size={18} /> },
     { id: "admin", label: "Admin Panel", icon: <Settings size={18} />, role: "admin" },
     { id: "documents", label: "Documents", icon: <FileText size={18} />, role: "admin" },
+    { id: "tags", label: "Tags", icon: <Tag size={18} /> },
   ];
 
   const handleNavClick = (tabId: string) => {

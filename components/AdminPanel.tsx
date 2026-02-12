@@ -353,34 +353,36 @@ export default function AdminPanel() {
                 <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <Library size={20} /> Knowledge Base Documents
                 </h2>
-                {knowledgeDocs.length === 0 ? (
-                  <p
-                    style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
-                  >
-                    No knowledge documents uploaded yet
-                  </p>
-                ) : (
-                  knowledgeDocs.map((doc) => (
-                    <div key={doc.doc_id} className="knowledge-doc-card">
-                      <div>
-                        <h3>{doc.title}</h3>
-                        <p>Category: {doc.category}</p>
-                        <p>
-                          Chunks: {doc.chunk_count} | Uploaded by: {doc.uploaded_by}
-                        </p>
-                        {doc.description && (
-                          <p style={{ fontStyle: "italic" }}>{doc.description}</p>
-                        )}
+                <div className="scrollable-area">
+                  {knowledgeDocs.length === 0 ? (
+                    <p
+                      style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
+                    >
+                      No knowledge documents uploaded yet
+                    </p>
+                  ) : (
+                    knowledgeDocs.map((doc) => (
+                      <div key={doc.doc_id} className="knowledge-doc-card">
+                        <div>
+                          <h3>{doc.title}</h3>
+                          <p>Category: {doc.category}</p>
+                          <p>
+                            Chunks: {doc.chunk_count} | Uploaded by: {doc.uploaded_by}
+                          </p>
+                          {doc.description && (
+                            <p style={{ fontStyle: "italic" }}>{doc.description}</p>
+                          )}
+                        </div>
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDeleteKnowledge(doc.doc_id)}
+                        >
+                          Delete
+                        </button>
                       </div>
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteKnowledge(doc.doc_id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ))
-                )}
+                    ))
+                  )}
+                </div>
               </div>
             </>
           )}
@@ -440,17 +442,19 @@ export default function AdminPanel() {
               {/* Therapists List */}
               <div className="admin-section">
                 <h2>All Users / Therapists</h2>
-                {therapists.map((t) => (
-                  <div key={t.email} className="therapist-card">
-                    <h3>{t.name}</h3>
-                    <p>Email: {t.email}</p>
-                    <p style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      Status: {t.active ? <><CheckCircle size={14} color="#16a34a" /> Active</> : <><XCircle size={14} color="#dc2626" /> Inactive</>}
-                    </p>
-                    <p>Role: {t.role || (t.email.includes("admin") ? "admin" : "therapist")}</p>
-                    <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
-                  </div>
-                ))}
+                <div className="scrollable-area">
+                  {therapists.map((t) => (
+                    <div key={t.email} className="therapist-card">
+                      <h3>{t.name}</h3>
+                      <p>Email: {t.email}</p>
+                      <p style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        Status: {t.active ? <><CheckCircle size={14} color="#16a34a" /> Active</> : <><XCircle size={14} color="#dc2626" /> Inactive</>}
+                      </p>
+                      <p>Role: {t.role || (t.email.includes("admin") ? "admin" : "therapist")}</p>
+                      <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </>
           )}
