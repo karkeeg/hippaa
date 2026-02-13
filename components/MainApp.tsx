@@ -28,16 +28,22 @@ export default function MainApp() {
       <div className="main-container">
         <Header onMenuClick={toggleSidebar} />
         <main className="content-area">
-          {activeTab === "chat" && <ChatInterface />}
-          {activeTab === "admin" && currentUser?.role === "admin" && (
-            <AdminPanel />
+          <div className={activeTab === "chat" ? "h-full flex flex-col" : "hidden"}>
+            <ChatInterface />
+          </div>
+          {currentUser?.role === "admin" && (
+            <>
+              <div className={activeTab === "admin" ? "h-full flex flex-col" : "hidden"}>
+                <AdminPanel />
+              </div>
+              <div className={activeTab === "documents" ? "h-full flex flex-col" : "hidden"}>
+                <DocumentsPanel />
+              </div>
+            </>
           )}
-          {activeTab === "documents" && currentUser?.role === "admin" && (
-            <DocumentsPanel />
-          )}
-          {activeTab === "tags" && (
+          <div className={activeTab === "tags" ? "h-full flex flex-col" : "hidden"}>
             <TagsPanel />
-          )}
+          </div>
         </main>
       </div>
     </div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { apiCall } from "@/lib/api";
-import { Tag, Loader2, AlertCircle } from "lucide-react";
+import { Tag, Loader2, AlertCircle, Inbox } from "lucide-react";
+import { useApp } from "@/lib/context";
 
 interface TagObject {
   tag_id: string;
@@ -16,19 +17,23 @@ interface TagObject {
 }
 
 export default function TagsPanel() {
+  const { selectedClientId } = useApp();
   const [tags, setTags] = useState<TagObject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTags();
-  }, []);
+  }, [selectedClientId]);
 
   const fetchTags = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiCall("/evidence/tags/available");
+      const url = selectedClientId 
+        ? `/evidence/tags/available?client_id=${selectedClientId}`
+        : "/evidence/tags/available";
+      const response = await apiCall(url);
       if (response.ok) {
         const data = await response.json();
         
@@ -76,13 +81,13 @@ export default function TagsPanel() {
   };
 
   return (
-    <div className="tab-content active" style={{ padding: "24px" }}>
-      <div className="admin-section">
+    <div className="tab-content active h-full flex flex-col overflow-hidden" style={{ padding: "24px" }}>
+      <div className="admin-section flex-1 flex flex-col min-h-0 overflow-y-auto">
         <h2 style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
           <Tag size={20} /> Available Evidence Tags
         </h2>
 
-        {loading && (
+        {loading && tags.length === 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-text-muted)", padding: "20px" }}>
             <Loader2 size={20} className="animate-spin" />
             Loading tags...

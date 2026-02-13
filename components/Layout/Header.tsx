@@ -51,9 +51,9 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     <header className="header-new">
       <div className="header-left">
         <button className="mobile-menu-btn" onClick={onMenuClick}>
-          <Menu size={24} />
+          <Menu size={24} className="color-text-header" />
         </button>
-        {activeTab === "chat" && (
+        {(activeTab === "chat" || activeTab === "tags") && (
           <div className="client-selector-mini">
             <select
               id="clientSelectDropdown"

@@ -169,8 +169,8 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
   };
 
   return (
-    <div className="tab-content active">
-      <div className="admin-panel">
+    <div className="tab-content active h-full flex flex-col" style={{ padding: "24px" }}>
+      <div className="admin-panel flex-1 flex flex-col min-h-0 overflow-y-auto">
         <div className="admin-section">
           <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <FileText size={20} /> Client Document Management

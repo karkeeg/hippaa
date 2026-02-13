@@ -108,9 +108,9 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="tab-content active">
-      <div className="chat-container">
-        <div className="chat-messages">
+    <div className="tab-content active h-full flex flex-col min-h-0 overflow-hidden">
+      <div className="chat-container flex-1 flex flex-col min-h-0 overflow-hidden">
+        <div className="chat-messages flex-1 overflow-y-auto w-full">
           {chatHistory.length === 0 ? (
             <div
               style={{ textAlign: "center", padding: "40px", color: "#7a82a8" }}

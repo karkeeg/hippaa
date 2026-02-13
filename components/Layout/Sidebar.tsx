@@ -33,7 +33,7 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean, onClose:
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Stethoscope size={24} color="#63b3ed" />
+            <Stethoscope size={24} color="#101a22ff" />
             HIPAA Admin
           </div>
           <button className="mobile-close-btn" onClick={onClose}>
@@ -59,8 +59,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean, onClose:
 
         <div className="sidebar-footer">
           <div className="user-profile">
-            <div className="user-avatar">
-              <User size={20} color="#fff" />
+            <div className="user-avatar" style={{ background: "var(--color-bg-main)" }}>
+              <User size={20} color="var(--color-primary)" />
             </div>
             <div className="user-details">
               <div className="user-name">{currentUser?.name || "Therapist"}</div>

@@ -247,8 +247,8 @@ export default function AdminPanel() {
   };
 
   return (
-    <div className="tab-content active">
-      <div className="admin-panel">
+    <div className="tab-content active h-full flex flex-col">
+      <div className="admin-panel flex-1 flex flex-col min-h-0 overflow-y-auto">
         <div className="admin-sub-tabs">
           <button 
             className={`sub-tab ${activeSubTab === "knowledge" ? "active" : ""}`}
@@ -440,7 +440,7 @@ export default function AdminPanel() {
               </div>
 
               {/* Therapists List */}
-              <div className="admin-section">
+              <div className="admin-section flex-1 flex flex-col min-h-0 overflow-y-auto">
                 <h2>All Users / Therapists</h2>
                 <div className="scrollable-area">
                   {therapists.map((t) => (
