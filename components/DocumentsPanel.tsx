@@ -169,10 +169,10 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
   };
 
   return (
-    <div className="tab-content active h-full flex flex-col" style={{ padding: "24px" }}>
+    <div className="tab-content active h-full flex flex-col content-padding">
       <div className="admin-panel flex-1 flex flex-col min-h-0 overflow-y-auto">
         <div className="admin-section">
-          <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <h2 className="admin-section-heading">
             <FileText size={20} /> Client Document Management
           </h2>
 
@@ -214,7 +214,7 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
               )}
 
               {loading && (
-                <div className="loading-spinner" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center", padding: "20px" }}>
+                <div className="loading-spinner-wrapper">
                   <Loader2 size={24} className="animate-spin" /> Loading documents...
                 </div>
               )}
@@ -222,7 +222,7 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
               {!loading && documents.length === 0 && (
                 <div className="no-documents">
                   <div className="no-documents-icon">
-                    <Inbox size={48} color="#cbd5e0" />
+                    <Inbox size={48} />
                   </div>
                   <p>No documents found for this client</p>
                 </div>
@@ -239,7 +239,7 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
                               doc.source_uri ||
                               "Unknown Document"}
                           </div>
-                          <div className="document-date" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <div className="document-date">
                             <Calendar size={14} /> {formatDate(doc.date || doc.date_iso)}
                           </div>
                         </div>
@@ -289,7 +289,6 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
                         <button
                           className="doc-btn"
                           onClick={() => viewDocumentDetails(doc)}
-                          style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
                           <Search size={16} /> View Full SOAP Note
                         </button>
@@ -304,7 +303,7 @@ ${data.tags ? JSON.stringify(data.tags, null, 2) : "No tags available"}
           {!selectedClient && (
             <div className="no-documents">
               <div className="no-documents-icon">
-                <Folder size={48} color="#cbd5e0" />
+                <Folder size={48} />
               </div>
               <p>Select a client to view their documents</p>
             </div>

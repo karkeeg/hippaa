@@ -253,21 +253,18 @@ export default function AdminPanel() {
           <button 
             className={`sub-tab ${activeSubTab === "knowledge" ? "active" : ""}`}
             onClick={() => setActiveSubTab("knowledge")}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             <Library size={16} /> Knowledge Base
           </button>
           <button 
             className={`sub-tab ${activeSubTab === "users" ? "active" : ""}`}
             onClick={() => setActiveSubTab("users")}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             <Users size={16} /> User Management
           </button>
           <button 
             className={`sub-tab ${activeSubTab === "assignments" ? "active" : ""}`}
             onClick={() => setActiveSubTab("assignments")}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             <LinkIcon size={16} /> Client Assignments
           </button>
@@ -278,7 +275,7 @@ export default function AdminPanel() {
             <>
               {/* Upload Knowledge Base */}
               <div className="admin-section">
-                <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <h2 className="admin-section-heading">
                   <Library size={20} /> Upload Knowledge Base Document
                 </h2>
                 {uploadSuccess && (
@@ -350,14 +347,12 @@ export default function AdminPanel() {
 
               {/* Knowledge Base Documents List */}
               <div className="admin-section">
-                <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <h2 className="admin-section-heading">
                   <Library size={20} /> Knowledge Base Documents
                 </h2>
                 <div className="scrollable-area">
                   {knowledgeDocs.length === 0 ? (
-                    <p
-                      style={{ color: "#7a82a8", textAlign: "center", padding: "20px" }}
-                    >
+                    <p className="no-data-text">
                       No knowledge documents uploaded yet
                     </p>
                   ) : (
@@ -370,7 +365,7 @@ export default function AdminPanel() {
                             Chunks: {doc.chunk_count} | Uploaded by: {doc.uploaded_by}
                           </p>
                           {doc.description && (
-                            <p style={{ fontStyle: "italic" }}>{doc.description}</p>
+                            <p className="doc-description-text">{doc.description}</p>
                           )}
                         </div>
                         <button
@@ -447,8 +442,8 @@ export default function AdminPanel() {
                     <div key={t.email} className="therapist-card">
                       <h3>{t.name}</h3>
                       <p>Email: {t.email}</p>
-                      <p style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        Status: {t.active ? <><CheckCircle size={14} color="#16a34a" /> Active</> : <><XCircle size={14} color="#dc2626" /> Inactive</>}
+                      <p className="therapist-status">
+                        Status: {t.active ? <><CheckCircle size={14} className="text-success" /> Active</> : <><XCircle size={14} className="text-error" /> Inactive</>}
                       </p>
                       <p>Role: {t.role || (t.email.includes("admin") ? "admin" : "therapist")}</p>
                       <p>Assigned Clients: {t.assigned_clients?.length || 0}</p>
@@ -464,7 +459,7 @@ export default function AdminPanel() {
               {/* Assign Clients */}
               <div className="admin-section">
                 <h2>Assign Clients to Therapists</h2>
-                <p style={{ marginBottom: "20px", color: "#6b7280", fontSize: "var(--text-base)" }}>
+                <p className="admin-section-description">
                   Link clients to their respective therapists to enable personalized smart chat assistance.
                 </p>
                 <div className="form-row">
@@ -498,16 +493,15 @@ export default function AdminPanel() {
                   </div>
                 </div>
                 <div className="btn-group">
-                  <button className="btn" onClick={handleAssignClient} style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                  <button className="btn" onClick={handleAssignClient}>
                     <CheckCircle size={18} /> Assign Client
                   </button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={handleUnassignClient}
-                    style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}
-                  >
-                    <XCircle size={18} /> Unassign Client
-                  </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={handleUnassignClient}
+                    >
+                      <XCircle size={18} /> Unassign Client
+                    </button>
                 </div>
               </div>
             </>
